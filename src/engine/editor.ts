@@ -612,14 +612,14 @@ export class Editor {
       x.beginPath();
       a.pts.forEach((p, i) => { const q = this.toScreenRaw(p.x, p.y); i ? x.lineTo(q.x, q.y) : x.moveTo(q.x, q.y); });
       x.closePath();
-      x.fillStyle = 'rgba(99,102,241,0.08)';
+      x.fillStyle = 'rgba(127,127,127,0.08)';
       x.fill();
       x.lineWidth = 1.5;
       x.setLineDash([5, 4]);
       x.strokeStyle = '#fff';
       x.stroke();
       x.lineDashOffset = 5;
-      x.strokeStyle = '#4f46e5';
+      x.strokeStyle = '#111111';
       x.stroke();
       x.setLineDash([]);
       x.lineDashOffset = 0;
@@ -678,8 +678,10 @@ export class Editor {
     k.forEach((p, i) => (i ? x.lineTo(p.x, p.y) : x.moveTo(p.x, p.y)));
     x.closePath();
     x.lineWidth = 1.5;
+    x.strokeStyle = '#ffffff';
+    x.stroke();
     x.setLineDash([6, 4]);
-    x.strokeStyle = '#4f46e5';
+    x.strokeStyle = '#111111';
     x.stroke();
     x.setLineDash([]);
     const r = this.rotHandle();
@@ -688,9 +690,9 @@ export class Editor {
     for (const p of k) {
       x.beginPath();
       x.rect(p.x - 6, p.y - 6, 12, 12);
-      x.fillStyle = '#fff'; x.fill(); x.strokeStyle = '#4f46e5'; x.stroke();
+      x.fillStyle = '#fff'; x.fill(); x.strokeStyle = '#111111'; x.stroke();
     }
-    x.beginPath(); x.arc(r.x, r.y, 7, 0, Math.PI * 2); x.fillStyle = '#4f46e5'; x.fill(); x.strokeStyle = '#fff'; x.stroke();
+    x.beginPath(); x.arc(r.x, r.y, 7, 0, Math.PI * 2); x.fillStyle = '#111111'; x.fill(); x.strokeStyle = '#fff'; x.stroke();
   }
 
   // ------------------------------------------------------------------ input
