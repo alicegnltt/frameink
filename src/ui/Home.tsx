@@ -65,6 +65,7 @@ export function Home({ onOpen }: { onOpen: (d: Doc) => void }) {
   const [fps, setFps] = useState(12);
   const [frames, setFrames] = useState(24);
   const [name, setName] = useState('');
+  const [paper, setPaper] = useState('#ffffff');
   const [showNew, setShowNew] = useState(false);
   const [confirmDel, setConfirmDel] = useState<string | null>(null);
   const [opening, setOpening] = useState(false);
@@ -79,7 +80,7 @@ export function Home({ onOpen }: { onOpen: (d: Doc) => void }) {
   const H = custom ? ch : PRESETS[preset].h;
 
   const createBlank = async () => {
-    const d = Doc.blank({ name: name.trim() || 'untitled', width: Math.max(16, Math.min(4096, W)), height: Math.max(16, Math.min(4096, H)), fps, frames: Math.max(1, Math.min(1000, frames)), paper: '#ffffff' });
+    const d = Doc.blank({ name: name.trim() || 'untitled', width: Math.max(16, Math.min(4096, W)), height: Math.max(16, Math.min(4096, H)), fps, frames: Math.max(1, Math.min(1000, frames)), paper });
     await d.save();
     d.rebuildAllThumbs();
     onOpen(d);
@@ -141,6 +142,18 @@ export function Home({ onOpen }: { onOpen: (d: Doc) => void }) {
                 </select>
               </label>
               <label htmlFor="new-frames"><span>frames</span><input id="new-frames" type="number" min={1} max={1000} value={frames} onChange={(e) => setFrames(+e.target.value)} /></label>
+              <label htmlFor="new-paper">
+                <span>paper</span>
+                <span className="paper-row">
+                  <span className="paper-swatch" style={{ background: paper }}>
+                    <input id="new-paper" type="color" value={paper} onChange={(e) => setPaper(e.target.value)} aria-label="Paper color" />
+                  </span>
+                  <span className="dim">{paper}</span>
+                  {['#ffffff', '#f4f1ea', '#000000'].map((c) => (
+                    <button key={c} type="button" className={'text-btn' + (paper === c ? ' on' : '')} onClick={() => setPaper(c)}>{c === '#ffffff' ? 'white' : c === '#000000' ? 'black' : 'cream'}</button>
+                  ))}
+                </span>
+              </label>
               <div className="form-foot">
                 <span className="dim">{(frames / fps).toFixed(1)}s</span>
                 <button className="solid" onClick={createBlank}>create</button>
@@ -173,6 +186,9 @@ export function Home({ onOpen }: { onOpen: (d: Doc) => void }) {
                     </div>
                   ) : (
                     <div className="prow">
+                      <button className="pthumb" onClick={() => open(p.id)} disabled={opening} style={{ background: p.paper, aspectRatio: `${p.width} / ${p.height}` }} aria-label={`Open ${p.name}`} tabIndex={-1}>
+                        {p.thumb && <img src={p.thumb} alt="" />}
+                      </button>
                       <button className="pname" onClick={() => open(p.id)} disabled={opening}>
                         {p.name}{p.hasVideo ? <span className="dim"> [video]</span> : null}
                       </button>
